@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Feb  8 23:11:50 2019
+
+@author: artun
+"""
+
+import sys
+import docplex.mp
+from docplex.mp.model import Model
+
+url = None
+key = None
+
+m = Model(name='computer_sales_ch3_q2')
+
+basic = m.continuous_var(name='basic')
+xp = m.continuous_var(name='xp')
+xvp = m.continuous_var(name='xvp')
+
+#define constraints1
+m.add_constraint(basic <= 600)
+m.add_constraint(xp <= 1200)
+m.add_constraint(xvp <= 50)
+
+#define constraints2
+ct_assembly = m.add_constraint( 5 * basic + 6 * xp  + 8 * xvp   <= 10000)
+ct_test = m.add_constraint( basic + 2 * xp + 3 * xvp <= 3000)
+
+#objective
+m.maximize(80 * basic + 129 * xp + 152 * xvp)
+
+s = m.solve(url=url, key=key)
+m.print_solution()
+m.print_information()
+
