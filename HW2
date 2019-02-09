@@ -19,7 +19,7 @@ basic = m.continuous_var(name='basic')
 xp = m.continuous_var(name='xp')
 xvp = m.continuous_var(name='xvp')
 
-#define constraints1
+#define main constraints1
 m.add_constraint(basic <= 600)
 m.add_constraint(xp <= 1200)
 m.add_constraint(xvp <= 50)
