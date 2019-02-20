@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb 19 16:19:01 2019
+
+@author: artun
+"""
+#
+from docplex.mp.model import Model
+from docplex.util.environment import get_environment
+url = None
+key = None         
+
+m = Model(name='call_center')
+
+
+cost = [140,100,80,9,13,15,8,140]
+
+persons = [   [5, 6, 5 ,0.5, 0.7, 0.1, 0.1, 3],
+              [3, 5, 2 ,0.5, 0.2, 0.1, 0.2, 5],
+              [1, 3, 0 ,0.3, 0,0, 0.3, 4     ],
+              [6, 1, 4 ,0.1, 0.9, 0.6, 0.1, 3],
+              [4, 1, 2 ,0.1, 0.1, 1.3, 0.2, 5],
+              [2, 1, 0 ,0,0, 0.4, 0.3, 4     ]]      
+
+min_exposure = (60,60,28,60,60,28)
+len_for=len(persons)
+len_exp =len(persons[0])
+qty = m.integer_var_list(8)
+
+#m.add_constraints(m.sum([qty[i]*persons[i][j] for j in range(len_exp)]) >= min_exposure[i] for i in range(len_for))
+
+m.add_constraints(m.sum(((qty[j]*persons[i][j]) for j in range(len_exp))) >= min_exposure[i] for i in range(len_for))
+
+#m.add_constraints( m.sum([call_goal[call]*(call_ratio[call][i]) for i in range(lengh2)])>=call_goal[call] for call in range(lengh)    )
+#{sum((qty[i]*persons[i][j] for j in range(len(persons)))) for i in range(0,len(persons[0]))}
+#[sum([qty[i]*persons[j][i] for i in range(len(persons[0]))]) for j in range(len(persons))]
+
+m.minimize(m.sum(((qty[i] * cost[i]) for i in range(0,len_exp))))
+
+s = m.solve(url=url, key=key)
+m.print_solution()
+m.print_information()
+
+y=m.minimize(m.sum(((qty[i] * cost[i]) for i in range(0,len_for))))
+
+##[sum([qty[i] *persons[i][j] for j in range(len(persons[0]))]) for i in range(len(persons))]
+#
+#m.add_constraints(sum((qty[i] *persons[i][j] for j in range(len(persons[0]))))>=min_exposure[i] for i in range(0,len(persons)))
+#
+##sum([(qty[i] * cost[i]) for i in range(1,len_for)])
+#
+
