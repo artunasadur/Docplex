@@ -32,6 +32,9 @@ qty = m.integer_var_list(8)
 
 m.add_constraints(m.sum(((qty[j]*persons[i][j]) for j in range(len_exp))) >= min_exposure[i] for i in range(len_for))
 
+# Add constraint specifyinng that at most 10 ads can be published for each
+#m.add_constraints((qty[i]>10 for i in range(len_exp))
+
 #m.add_constraints( m.sum([call_goal[call]*(call_ratio[call][i]) for i in range(lengh2)])>=call_goal[call] for call in range(lengh)    )
 #{sum((qty[i]*persons[i][j] for j in range(len(persons)))) for i in range(0,len(persons[0]))}
 #[sum([qty[i]*persons[j][i] for i in range(len(persons[0]))]) for j in range(len(persons))]
